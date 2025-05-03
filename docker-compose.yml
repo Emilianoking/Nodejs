@@ -1,0 +1,29 @@
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - /app/node_modules #Evita sobrescirbir node_modules
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/ecommerceDB # Cambia mongo por el nombre del servicio de mongo en tu docker-compose 
+    restart: unless-stopped # Reinicia automáticamente si falla x cosa
+    command: npm run dev #Sobrescribe el comando por defecto
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+
+volumes:
+  mongo-data: 
+
