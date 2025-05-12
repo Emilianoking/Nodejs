@@ -12,8 +12,7 @@ const options = {
         },
         servers: [
             {
-                // Esto se debe cambiar al desplegar la API
-                urls: "http://localhost:5000",
+                url: "http://localhost:5000", // Corrige "urls" a "url"
                 description: "Servicio local",
             },
         ],
@@ -24,7 +23,7 @@ const options = {
 const swaggerSpec = swaggerJsDoc(options);
 
 const setupSwagger = (app) => {
-    app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-}
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+};
 
 module.exports = setupSwagger;

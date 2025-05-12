@@ -18,16 +18,15 @@ const connectDB = require("./database/db");
 
 const app = express();
 
-// Conectar a la base de datos usando connectDB
-connectDB(); // Esto ya maneja la conexión, así que eliminamos mongoose.connect
+// Conectar a la base de datos
+connectDB();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
-setupSwagger(app);
 app.use(morgan("dev"));
 
-// Registrar rutas
+// Registrar rutas primero
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 app.use("/users", userRoutes);
@@ -48,6 +47,9 @@ app.use("/products", routes);
 app.get("/", (req, res) => {
   res.send("API Ecommerce funcionando 🚀");
 });
+
+// Montar Swagger después de las rutas de la API
+setupSwagger(app);
 
 // Puerto
 const PORT = process.env.PORT || 5000;
