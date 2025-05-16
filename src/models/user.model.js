@@ -20,9 +20,13 @@ const userSchema = new Schema({
     required: true,
     default: "user",
   },
+  profileImage: {
+    type: String,
+    default: "", // Para almacenar la ruta de la imagen
+  },
   createdAt: {
     type: Date,
-    default: Date.now, // Registra la fecha actual automáticamente
+    default: Date.now,
   },
 });
 

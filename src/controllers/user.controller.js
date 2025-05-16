@@ -57,9 +57,39 @@ const updateUserHandler = async (req, res) => {
   }
 };
 
+// Nueva función para actualizar solo la foto de perfil
+const updateProfileImage = async (req, res) => {
+  try {
+    const userId = req.user.id; // ID del usuario autenticado
+    const updateData = {};
+
+    if (req.file) {
+      updateData.profileImage = `/uploads/${req.file.filename}`;
+    } else {
+      return res.status(400).json({ message: "No se proporcionó ninguna imagen" });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error al actualizar la foto de perfil:", error);
+    res.status(500).json({ message: "Error al actualizar la foto de perfil" });
+  }
+};
+
 module.exports = {
   getAllUsers: getAllUsersHandler,
   getCurrentUser,
   deleteUser: deleteUserHandler,
   updateUser: updateUserHandler,
+  updateProfileImage, // Exportar la nueva función
 };
